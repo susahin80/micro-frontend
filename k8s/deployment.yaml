@@ -7,7 +7,7 @@ metadata:
 data:
   config.js: |
     window.env = {}
-    window.env.BASE_API_URL = ${BASE_API_URL}
+    window.env.BASE_API_URL = "http://a3b7fc5dc707d4597a4e68899d731508-659087922.eu-central-1.elb.amazonaws.com:8000/api"
     window.env.USING_DOCKER = true
     window.env.WHICH_ENV = "aws"
 
