@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  labels:
+    app: frontend
+data:
+  config.js: |
+    window.env = {}
+    window.env.BASE_API_URL = ${BASE_API_URL}
+    window.env.USING_DOCKER = true
+    window.env.WHICH_ENV = "aws"
+
+  # config.js: |
+  #   window.env = {}
+  #   window.env.BASE_API_URL = "http://34.134.99.6:8000/api"
+  #   window.env.USING_DOCKER = true
+  #   window.env.WHICH_ENV = "aws"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  labels:
+    app: frontend
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - image: susah80/micro-frontend:${VERSION}
+          name: frontend
+          resources:
+            requests:
+              cpu: "20m"
+              memory: "55M"
+          volumeMounts:
+            - name: config-volume
+              mountPath: /usr/share/nginx/html/config.js
+              subPath: config.js
+      volumes:
+        - name: config-volume
+          configMap:
+            name: frontend-config
+
+---
+# only load balancer
+kind: Service
+apiVersion: v1
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: frontend
+  type: LoadBalancer
+  ports:
+    - name: http-port
+      port: 80
+      targetPort: 80 # nginx'de bu port'dan dinliyoruz!! nginx/nginx.conf
+
