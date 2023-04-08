@@ -27,7 +27,7 @@ pipeline {
                 script {
                     echo "building the docker image..."
                     withCredentials([usernamePassword(credentialsId: 'docker-credentials', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-                        sh "docker build -t susah80/micro-frontend:${VERSION} --target prod ."
+                        sh "docker build -f Dockerfile.prod -t susah80/micro-frontend:${VERSION} ."
                         sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
                         sh "docker push susah80/micro-frontend:${VERSION}"
                     }
