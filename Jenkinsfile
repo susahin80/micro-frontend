@@ -62,7 +62,7 @@ pipeline {
                         sh 'git config --global user.name "jenkins"'
 
                         sh 'git status'
-                        sh "git remote set-url origin https://${GITHUB_TOKEN}@github.com/susahin80/micro-api.git"
+                        sh "git remote set-url origin https://${GITHUB_TOKEN}@github.com/susahin80/micro-frontend.git"
                         sh 'git add .'
                         sh 'git commit -m "[ci-skip]"'
                         sh 'git push origin HEAD:master'
