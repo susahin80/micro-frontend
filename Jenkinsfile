@@ -45,7 +45,7 @@ pipeline {
             steps {
                 script {
                     echo 'deploying docker image...'
-                    sh 'aws eks update-kubeconfig --name my-cluster --region eu-central-1'
+                    sh 'aws eks update-kubeconfig --name my-demo-cluster --region eu-central-1'
                     sh 'envsubst < k8s/deployment.yaml | kubectl apply  -f -'                
                 }
             }
